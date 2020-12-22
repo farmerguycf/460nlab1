@@ -38,6 +38,7 @@ main(int argc, char* argv[]) {
     char lLine[MAX_LINE_LENGTH + 1], *lLabel, *lOpcode, *lArg1,
                 *lArg2, *lArg3, *lArg4;
 
+
     int lRet;
     
     /* open the source file */
@@ -58,7 +59,10 @@ main(int argc, char* argv[]) {
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
-                        
+           if(!*lArg2){
+             int num_to_file = toNum(lArg1);
+	     fprintf( outfile, "0x%.4X\n", num_to_file); 
+	   }             
          }
        } while( lRet != DONE );
 
@@ -135,7 +139,10 @@ toNum( char * pStr )
 }
 
 int isOpcode(char * ptr){
-	return 1;
+	if(!strcmp(ptr, "add")){return 1;}
+
+
+	return -1;
 }
 
 
