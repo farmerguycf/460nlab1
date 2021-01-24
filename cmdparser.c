@@ -20,6 +20,12 @@ int isOpcode(char * ptr);
 int toNum(char * pStr );
 int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode, char ** pArg1, char ** pArg2, char ** pArg3, char ** pArg4);
 
+struct table_element{
+    char label[MAX_LINE_LENGTH];
+    int address;
+};
+struct table_element symbol_table[MAX_LINE_LENGTH];
+
 int
 main(int argc, char* argv[]) {
 
@@ -31,14 +37,14 @@ main(int argc, char* argv[]) {
     iFileName = argv[1];
     oFileName = argv[2];
 
+    
+
     printf("program name = '%s'\n", prgName);
     printf("input file name = '%s'\n", iFileName);
     printf("output file name = '%s'\n", oFileName);
 
     char lLine[MAX_LINE_LENGTH + 1], *lLabel, *lOpcode, *lArg1,
                 *lArg2, *lArg3, *lArg4;
-
-
     int lRet;
 
     /* open the source file */
@@ -59,7 +65,7 @@ main(int argc, char* argv[]) {
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
-         switch (lOpcode) {
+         switch (*lOpcode) {
             case "add":
 
               break;
@@ -197,7 +203,65 @@ toNum( char * pStr )
 }
 
 int isOpcode(char * ptr){
-	if(!strcmp(ptr, "add")){return 1;}
+    switch (ptr) {
+            case "add":
+                return 1;
+              break;
+            case "and":
+                return 1;
+              break;
+            case "br":
+                return 1;
+              break;
+            case "jmp":
+                return 1;
+              break;
+            case "jsr":
+                return 1;
+              break;
+            case "jsrr":
+                return 1;
+              break;
+            case "ldb":
+                return 1;
+              break;
+            case "ldw":
+                return 1;
+              break;
+            case "lea":
+                return 1;
+              break;
+            case "not":
+                return 1;
+              break;
+            case "ret":
+                return 1;
+              break;
+            case "lshf":
+                return 1;
+              break;
+            case "rshfl":
+                return 1;
+                break;
+            case "rshfa":
+                return 1;
+              break;
+            case "stb":
+                return 1;
+              break;
+            case "stw":
+                return 1;
+              break;
+            case "trap":
+                return 1;
+              break;
+            case "xor":
+                return 1;
+              break;
+        default:
+            return -1;
+         }
+
 
 
 	return -1;
