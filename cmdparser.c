@@ -8,7 +8,7 @@
 #define MAX_LINE_LENGTH 255
 
 enum{
-     DONE, 
+     DONE,
      OK,
      EMPTY_LINE
     };
@@ -40,11 +40,11 @@ main(int argc, char* argv[]) {
 
 
     int lRet;
-    
+
     /* open the source file */
     infile = fopen(argv[1], "r");
     outfile = fopen(argv[2], "w");
-    
+
     if (!infile) {
       printf("Error: Cannot open file %s\n", argv[1]);
       exit(4);
@@ -59,10 +59,68 @@ main(int argc, char* argv[]) {
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
+         switch (lOpcode) {
+            case "add":
+
+              break;
+            case "and":
+
+              break;
+            case "br":
+
+              break;
+            case "jmp":
+
+              break;
+            case "jsr":
+
+              break;
+            case "jsrr":
+
+              break;
+            case "ldb":
+
+              break;
+            case "ldw":
+
+              break;
+            case "lea":
+
+              break;
+            case "not":
+
+              break;
+            case "ret":
+
+              break;
+            case "lshf":
+
+              break;
+            case "rshfl":
+
+                break;
+            case "rshfa":
+
+              break;
+            case "stb":
+
+              break;
+            case "stw":
+
+              break;
+            case "trap":
+
+              break;
+            case "xor":
+
+              break;
+         }
+
+
            if(!*lArg2){
              int num_to_file = toNum(lArg1);
-	     fprintf( outfile, "0x%.4X\n", num_to_file); 
-	   }             
+	     fprintf( outfile, "0x%.4X\n", num_to_file);
+	   }
          }
        } while( lRet != DONE );
 
@@ -155,7 +213,7 @@ int
                 return( DONE );
            for( i = 0; i < strlen( pLine ); i++ )
                 pLine[i] = tolower( pLine[i] );
-          
+
           /* convert entire line to lowercase */
            *pLabel = *pOpcode = *pArg1 = *pArg2 = *pArg3 = *pArg4 = pLine + strlen(pLine);
 
@@ -175,13 +233,13 @@ int
                 *pLabel = lPtr;
                 if( !( lPtr = strtok( NULL, "\t\n ," ) ) ) return( OK );
            }
-          
+
           *pOpcode = lPtr;
 
            if( !( lPtr = strtok( NULL, "\t\n ," ) ) ) return( OK );
-          
+
           *pArg1 = lPtr;
-          
+
           if( !( lPtr = strtok( NULL, "\t\n ," ) ) ) return( OK );
 
            *pArg2 = lPtr;
@@ -197,5 +255,3 @@ int
         }
 
         /* Note: MAX_LINE_LENGTH, OK, EMPTY_LINE, and DONE are defined values */
-
-                
