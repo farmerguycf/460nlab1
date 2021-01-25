@@ -65,70 +65,73 @@ main(int argc, char* argv[]) {
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
-         switch (*lOpcode) {
-            case "add":
+         if(strcmp(*lOpcode, "add")){
 
-              break;
-            case "and":
 
-              break;
-            case "br":
+         }else if(strcmp(*lOpcode, "and")){
 
-              break;
-            case "jmp":
 
-              break;
-            case "jsr":
+         }else if(strcmp(*lOpcode, "and")){
 
-              break;
-            case "jsrr":
 
-              break;
-            case "ldb":
+         }else if(strcmp(*lOpcode, "br")){
 
-              break;
-            case "ldw":
 
-              break;
-            case "lea":
+         }else if(strcmp(*lOpcode, "jmp")){
 
-              break;
-            case "not":
 
-              break;
-            case "ret":
+         }else if(strcmp(*lOpcode, "jsr")){
 
-              break;
-            case "lshf":
 
-              break;
-            case "rshfl":
+         }else if(strcmp(*lOpcode, "jsrr")){
 
-                break;
-            case "rshfa":
 
-              break;
-            case "stb":
+         }else if(strcmp(*lOpcode, "ldb")){
 
-              break;
-            case "stw":
 
-              break;
-            case "trap":
+         }else if(strcmp(*lOpcode, "ldw")){
 
-              break;
-            case "xor":
 
-              break;
+         }else if(strcmp(*lOpcode, "lea")){
+
+
+         }else if(strcmp(*lOpcode, "not")){
+
+
+         }else if(strcmp(*lOpcode, "ret")){
+
+
+         }else if(strcmp(*lOpcode, "lshf")){
+
+
+         }else if(strcmp(*lOpcode, "rshfl")){
+
+
+         }else if(strcmp(*lOpcode, "rshfa")){
+
+
+         }else if(strcmp(*lOpcode, "stb")){
+
+
+         }else if(strcmp(*lOpcode, "stw")){
+
+
+         }else if(strcmp(*lOpcode, "trap")){
+
+
+         }else if(strcmp(*lOpcode, "xor")){
+
+
          }
 
+        if(!*lArg2){
 
-           if(!*lArg2){
-             int num_to_file = toNum(lArg1);
-	     fprintf( outfile, "0x%.4X\n", num_to_file);
-	   }
-         }
-       } while( lRet != DONE );
+          int num_to_file = toNum(lArg1);
+	        fprintf( outfile, "0x%.4X\n", num_to_file);
+	      
+        }
+      }
+    } while( lRet != DONE );
 
 
 
@@ -203,68 +206,67 @@ toNum( char * pStr )
 }
 
 int isOpcode(char * ptr){
-    switch (ptr) {
-            case "add":
-                return 1;
-              break;
-            case "and":
-                return 1;
-              break;
-            case "br":
-                return 1;
-              break;
-            case "jmp":
-                return 1;
-              break;
-            case "jsr":
-                return 1;
-              break;
-            case "jsrr":
-                return 1;
-              break;
-            case "ldb":
-                return 1;
-              break;
-            case "ldw":
-                return 1;
-              break;
-            case "lea":
-                return 1;
-              break;
-            case "not":
-                return 1;
-              break;
-            case "ret":
-                return 1;
-              break;
-            case "lshf":
-                return 1;
-              break;
-            case "rshfl":
-                return 1;
-                break;
-            case "rshfa":
-                return 1;
-              break;
-            case "stb":
-                return 1;
-              break;
-            case "stw":
-                return 1;
-              break;
-            case "trap":
-                return 1;
-              break;
-            case "xor":
-                return 1;
-              break;
-        default:
-            return -1;
-         }
+  
+  if(strcmp(*ptr, "add")){
 
 
+  }else if(strcmp(*ptr, "and")){
 
-	return -1;
+
+  }else if(strcmp(*ptr, "and")){
+
+
+  }else if(strcmp(*ptr, "br")){
+
+
+  }else if(strcmp(*ptr, "jmp")){
+
+
+  }else if(strcmp(*ptr, "jsr")){
+
+
+  }else if(strcmp(*ptr, "jsrr")){
+
+
+  }else if(strcmp(*ptr, "ldb")){
+
+
+  }else if(strcmp(*ptr, "ldw")){
+
+
+  }else if(strcmp(*ptr, "lea")){
+
+
+  }else if(strcmp(*ptr, "not")){
+
+
+  }else if(strcmp(*ptr, "ret")){
+
+
+  }else if(strcmp(*ptr, "lshf")){
+
+
+  }else if(strcmp(*ptr, "rshfl")){
+
+
+  }else if(strcmp(*ptr, "rshfa")){
+
+
+  }else if(strcmp(*ptr, "stb")){
+
+
+  }else if(strcmp(*ptr, "stw")){
+
+
+  }else if(strcmp(*ptr, "trap")){
+
+
+  }else if(strcmp(*ptr, "xor")){
+
+
+  }
+  
+  return -1;
 }
 
 
