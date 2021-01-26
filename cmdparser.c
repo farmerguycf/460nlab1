@@ -7,6 +7,10 @@
 
 #define MAX_LINE_LENGTH 255
 
+int Program_Counter;
+int Orig;
+int Table_Counter = 0;
+
 enum{
      DONE,
      OK,
@@ -21,7 +25,7 @@ int toNum(char * pStr );
 int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode, char ** pArg1, char ** pArg2, char ** pArg3, char ** pArg4);
 
 struct table_element{
-    char label[MAX_LINE_LENGTH];
+    char *label;
     int address;
 };
 struct table_element symbol_table[MAX_LINE_LENGTH];
@@ -60,69 +64,116 @@ main(int argc, char* argv[]) {
       exit(4);
     }
 
+    do{
+      lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
+      if( lRet != DONE && lRet != EMPTY_LINE ){
+
+        if(strcmp(*lOpcode, ".orig")==0){
+          Orig = toNum(lArg1);
+          Program_Counter = Orig;
+        }else{
+
+          if(lLabel != NULL){
+
+            struct table_element elem;
+            strcpy(*elem.label, *lLabel);
+            elem.address = Program_Counter;
+            symbol_table[Table_Counter] = elem;
+          }
+
+          Program_Counter++;
+        }
+
+
+        if(!*lArg2){
+
+          int num_to_file = toNum(lArg1);
+	        fprintf( outfile, "0x%.4X\n", num_to_file);
+	      
+        }
+      }
+    } while( lRet != DONE );
+
+
 
     /* Do stuff with files */
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
-         if(strcmp(*lOpcode, "add")){
+        if(!isOpcode(lOpcode)){
+          if(strcmp(*lOpcode, "add")==0){
 
 
-         }else if(strcmp(*lOpcode, "and")){
+          }else if(strcmp(*lOpcode, "and")==0){
 
 
-         }else if(strcmp(*lOpcode, "and")){
+          }else if(strcmp(*lOpcode, "and")==0){
 
 
-         }else if(strcmp(*lOpcode, "br")){
+          }else if(strcmp(*lOpcode, "br")==0){
 
 
-         }else if(strcmp(*lOpcode, "jmp")){
+          }else if(strcmp(*lOpcode, "jmp")==0){
 
 
-         }else if(strcmp(*lOpcode, "jsr")){
+          }else if(strcmp(*lOpcode, "jsr")==0){
 
 
-         }else if(strcmp(*lOpcode, "jsrr")){
+          }else if(strcmp(*lOpcode, "jsrr")==0){
 
 
-         }else if(strcmp(*lOpcode, "ldb")){
+          }else if(strcmp(*lOpcode, "ldb")==0){
 
 
-         }else if(strcmp(*lOpcode, "ldw")){
+          }else if(strcmp(*lOpcode, "ldw")==0){
 
 
-         }else if(strcmp(*lOpcode, "lea")){
+          }else if(strcmp(*lOpcode, "lea")==0){
 
 
-         }else if(strcmp(*lOpcode, "not")){
+          }else if(strcmp(*lOpcode, "not")==0){
 
 
-         }else if(strcmp(*lOpcode, "ret")){
+          }else if(strcmp(*lOpcode, "ret")==0){
 
 
-         }else if(strcmp(*lOpcode, "lshf")){
+          }else if(strcmp(*lOpcode, "lshf")==0){
 
 
-         }else if(strcmp(*lOpcode, "rshfl")){
+          }else if(strcmp(*lOpcode, "rshfl")==0){
 
 
-         }else if(strcmp(*lOpcode, "rshfa")){
+          }else if(strcmp(*lOpcode, "rshfa")==0){
 
 
-         }else if(strcmp(*lOpcode, "stb")){
+          }else if(strcmp(*lOpcode, "stb")==0){
 
 
-         }else if(strcmp(*lOpcode, "stw")){
+          }else if(strcmp(*lOpcode, "stw")==0){
 
 
-         }else if(strcmp(*lOpcode, "trap")){
+          }else if(strcmp(*lOpcode, "trap")==0){
 
 
-         }else if(strcmp(*lOpcode, "xor")){
+          }else if(strcmp(*lOpcode, "xor")==0){
 
 
-         }
+          }else{
+            //error
+          }
+        }else{
+          if(strcmp(*lOpcode, ".orig")==0){
+
+
+          }else if(strcmp(*lOpcode, ".end")==0){
+
+
+          }else if(strcmp(*lOpcode, ".fill")==0){
+
+          }else{
+            //error
+          }
+        }
 
         if(!*lArg2){
 
@@ -207,62 +258,62 @@ toNum( char * pStr )
 
 int isOpcode(char * ptr){
   
-  if(strcmp(*ptr, "add")){
+  if(strcmp(*ptr, "add")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "and")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "and")){
+  }else if(strcmp(*ptr, "and")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "br")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "and")){
+  }else if(strcmp(*ptr, "jmp")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "jsr")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "br")){
+  }else if(strcmp(*ptr, "jsrr")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "ldb")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "jmp")){
+  }else if(strcmp(*ptr, "ldw")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "lea")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "jsr")){
+  }else if(strcmp(*ptr, "not")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "ret")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "jsrr")){
+  }else if(strcmp(*ptr, "lshf")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "rshfl")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "ldb")){
+  }else if(strcmp(*ptr, "rshfa")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "stb")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "ldw")){
+  }else if(strcmp(*ptr, "stw")==0){
+    return 1;
 
+  }else if(strcmp(*ptr, "trap")==0){
+    return 1;
 
-  }else if(strcmp(*ptr, "lea")){
-
-
-  }else if(strcmp(*ptr, "not")){
-
-
-  }else if(strcmp(*ptr, "ret")){
-
-
-  }else if(strcmp(*ptr, "lshf")){
-
-
-  }else if(strcmp(*ptr, "rshfl")){
-
-
-  }else if(strcmp(*ptr, "rshfa")){
-
-
-  }else if(strcmp(*ptr, "stb")){
-
-
-  }else if(strcmp(*ptr, "stw")){
-
-
-  }else if(strcmp(*ptr, "trap")){
-
-
-  }else if(strcmp(*ptr, "xor")){
-
+  }else if(strcmp(*ptr, "xor")==0){
+    return 1;
 
   }
   
