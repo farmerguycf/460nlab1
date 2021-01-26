@@ -67,8 +67,9 @@ main(int argc, char* argv[]) {
     do{
       lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
       if( lRet != DONE && lRet != EMPTY_LINE ){
-
-        if(strcmp(*lOpcode, ".orig")==0){
+        // if .orig then record the starting address
+        // else add to the program counter 
+        if(strcmp(lOpcode, ".orig")==0){
           Orig = toNum(lArg1);
           Program_Counter = Orig;
         }else{
@@ -76,7 +77,7 @@ main(int argc, char* argv[]) {
           if(lLabel != NULL){
 
             struct table_element elem;
-            strcpy(*elem.label, *lLabel);
+            strcpy(elem.label, lLabel);
             elem.address = Program_Counter;
             symbol_table[Table_Counter] = elem;
           }
@@ -101,74 +102,74 @@ main(int argc, char* argv[]) {
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
         if(!isOpcode(lOpcode)){
-          if(strcmp(*lOpcode, "add")==0){
+          if(strcmp(lOpcode, "add")==0){
 
 
-          }else if(strcmp(*lOpcode, "and")==0){
+          }else if(strcmp(lOpcode, "and")==0){
 
 
-          }else if(strcmp(*lOpcode, "and")==0){
+          }else if(strcmp(lOpcode, "and")==0){
 
 
-          }else if(strcmp(*lOpcode, "br")==0){
+          }else if(strcmp(lOpcode, "br")==0){
 
 
-          }else if(strcmp(*lOpcode, "jmp")==0){
+          }else if(strcmp(lOpcode, "jmp")==0){
 
 
-          }else if(strcmp(*lOpcode, "jsr")==0){
+          }else if(strcmp(lOpcode, "jsr")==0){
 
 
-          }else if(strcmp(*lOpcode, "jsrr")==0){
+          }else if(strcmp(lOpcode, "jsrr")==0){
 
 
-          }else if(strcmp(*lOpcode, "ldb")==0){
+          }else if(strcmp(lOpcode, "ldb")==0){
 
 
-          }else if(strcmp(*lOpcode, "ldw")==0){
+          }else if(strcmp(lOpcode, "ldw")==0){
 
 
-          }else if(strcmp(*lOpcode, "lea")==0){
+          }else if(strcmp(lOpcode, "lea")==0){
 
 
-          }else if(strcmp(*lOpcode, "not")==0){
+          }else if(strcmp(lOpcode, "not")==0){
 
 
-          }else if(strcmp(*lOpcode, "ret")==0){
+          }else if(strcmp(lOpcode, "ret")==0){
 
 
-          }else if(strcmp(*lOpcode, "lshf")==0){
+          }else if(strcmp(lOpcode, "lshf")==0){
 
 
-          }else if(strcmp(*lOpcode, "rshfl")==0){
+          }else if(strcmp(lOpcode, "rshfl")==0){
 
 
-          }else if(strcmp(*lOpcode, "rshfa")==0){
+          }else if(strcmp(lOpcode, "rshfa")==0){
 
 
-          }else if(strcmp(*lOpcode, "stb")==0){
+          }else if(strcmp(lOpcode, "stb")==0){
 
 
-          }else if(strcmp(*lOpcode, "stw")==0){
+          }else if(strcmp(lOpcode, "stw")==0){
 
 
-          }else if(strcmp(*lOpcode, "trap")==0){
+          }else if(strcmp(lOpcode, "trap")==0){
 
 
-          }else if(strcmp(*lOpcode, "xor")==0){
+          }else if(strcmp(lOpcode, "xor")==0){
 
 
           }else{
             //error
           }
         }else{
-          if(strcmp(*lOpcode, ".orig")==0){
+          if(strcmp(lOpcode, ".orig")==0){
 
 
-          }else if(strcmp(*lOpcode, ".end")==0){
+          }else if(strcmp(lOpcode, ".end")==0){
 
 
-          }else if(strcmp(*lOpcode, ".fill")==0){
+          }else if(strcmp(lOpcode, ".fill")==0){
 
           }else{
             //error
@@ -258,61 +259,61 @@ toNum( char * pStr )
 
 int isOpcode(char * ptr){
   
-  if(strcmp(*ptr, "add")==0){
+  if(strcmp(ptr, "add")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "and")==0){
+  }else if(strcmp(ptr, "and")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "and")==0){
+  }else if(strcmp(ptr, "and")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "br")==0){
+  }else if(strcmp(ptr, "br")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "jmp")==0){
+  }else if(strcmp(ptr, "jmp")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "jsr")==0){
+  }else if(strcmp(ptr, "jsr")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "jsrr")==0){
+  }else if(strcmp(ptr, "jsrr")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "ldb")==0){
+  }else if(strcmp(ptr, "ldb")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "ldw")==0){
+  }else if(strcmp(ptr, "ldw")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "lea")==0){
+  }else if(strcmp(ptr, "lea")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "not")==0){
+  }else if(strcmp(ptr, "not")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "ret")==0){
+  }else if(strcmp(ptr, "ret")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "lshf")==0){
+  }else if(strcmp(ptr, "lshf")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "rshfl")==0){
+  }else if(strcmp(ptr, "rshfl")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "rshfa")==0){
+  }else if(strcmp(ptr, "rshfa")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "stb")==0){
+  }else if(strcmp(ptr, "stb")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "stw")==0){
+  }else if(strcmp(ptr, "stw")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "trap")==0){
+  }else if(strcmp(ptr, "trap")==0){
     return 1;
 
-  }else if(strcmp(*ptr, "xor")==0){
+  }else if(strcmp(ptr, "xor")==0){
     return 1;
 
   }

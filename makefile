@@ -1,2 +1,2 @@
-converter: cmdparser.c 
-	gcc -o converter cmdparser.c -g -std=c99
+assemble: cmdparser.c 
+	gcc -o assemble cmdparser.c -g -std=c99
