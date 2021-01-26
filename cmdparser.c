@@ -25,7 +25,7 @@ int toNum(char * pStr );
 int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode, char ** pArg1, char ** pArg2, char ** pArg3, char ** pArg4);
 
 struct table_element{
-    char *label;
+    char label[MAX_LINE_LENGTH];
     int address;
 };
 struct table_element symbol_table[MAX_LINE_LENGTH];
@@ -74,24 +74,22 @@ main(int argc, char* argv[]) {
           Program_Counter = Orig;
         }else{
 
-          if(lLabel != NULL){
+          if(strcmp(lLabel,"")!=0){
 
             struct table_element elem;
             strcpy(elem.label, lLabel);
             elem.address = Program_Counter;
             symbol_table[Table_Counter] = elem;
+	    Table_Counter++;
           }
 
+          Program_Counter++;
           Program_Counter++;
         }
 
 
-        if(!*lArg2){
 
-          int num_to_file = toNum(lArg1);
-	        fprintf( outfile, "0x%.4X\n", num_to_file);
 	      
-        }
       }
     } while( lRet != DONE );
 
