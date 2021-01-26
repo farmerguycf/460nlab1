@@ -24,6 +24,21 @@ int isOpcode(char * ptr);
 int toNum(char * pStr );
 int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode, char ** pArg1, char ** pArg2, char ** pArg3, char ** pArg4);
 
+int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+int inst15(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+
 struct table_element{
     char label[MAX_LINE_LENGTH];
     int address;
@@ -101,61 +116,58 @@ main(int argc, char* argv[]) {
        if( lRet != DONE && lRet != EMPTY_LINE ){
         if(!isOpcode(lOpcode)){
           if(strcmp(lOpcode, "add")==0){
-
-
-          }else if(strcmp(lOpcode, "and")==0){
-
+              inst1(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "and")==0){
-
-
+            inst5(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            
           }else if(strcmp(lOpcode, "br")==0){
-
+            inst0(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "jmp")==0){
-
+            inst12(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "jsr")==0){
-
+            inst4(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "jsrr")==0){
-
+            inst4(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "ldb")==0){
-
+            inst2(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "ldw")==0){
-
+            inst6(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "lea")==0){
-
+            inst14(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "not")==0){
-
+            inst9(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "ret")==0){
-
+            inst12(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "lshf")==0){
-
+            inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "rshfl")==0){
-
+            inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "rshfa")==0){
-
+            inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "stb")==0){
-
+            inst3(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "stw")==0){
-
+            inst7(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "trap")==0){
-
+            inst15(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "xor")==0){
-
+            inst19(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else{
             //error
