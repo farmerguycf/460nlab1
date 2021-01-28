@@ -109,7 +109,8 @@ main(int argc, char* argv[]) {
     } while( lRet != DONE );
 
 
-
+    rewind(infile);
+    
     /* Do stuff with files */
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
