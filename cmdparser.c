@@ -23,8 +23,38 @@ FILE* outfile = NULL;
 int isOpcode(char * ptr);
 int toNum(char * pStr );
 int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode, char ** pArg1, char ** pArg2, char ** pArg3, char ** pArg4);
+int get_offset(char *label){
+    for(int i = 0; i<Table_Counter;i++){
+        if(strcmp(symbol_table[i].label, label)==0){
+            return symbol_table[i].address - Program_Counter;
+        }
+    }
+    return -1;
+}
+int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    int decoded_inst = 0x0000000000000000;
 
-int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4);
+    if(*strchr(opcode,'n')!=NULL){
+        int n = 1 << 11;
+        decoded_inst = decoded_inst | n;
+    }
+    if(*strchr(opcode,'z')!=NULL){
+        int z = 1 << 10;
+        decoded_inst = decoded_inst | z;
+    }
+    if(*strchr(opcode,'p')!=NULL){
+        int p = 1 << 9;
+        decoded_inst = decoded_inst | p;
+    }
+
+    int offset = get_offset(arg1);
+    if(offset != -1){
+        return decoded_inst | offset;
+    }
+    else{
+        // error handling
+    }
+}
 int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x0001000000000000;
 
@@ -181,6 +211,8 @@ main(int argc, char* argv[]) {
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
+           Program_Counter++;
+           Program_Counter++;
         if(!isOpcode(lOpcode)){
           if(strcmp(lOpcode, "add")==0){
               inst1(lOpcode, lArg1, lArg2, lArg3, lArg4);
