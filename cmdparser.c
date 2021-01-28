@@ -40,15 +40,15 @@ int get_offset(char *label){
 int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x0000000000000000;
 
-    if(*strchr(opcode,'n')!=NULL){
+    if(strchr(opcode,'n')!=NULL){
         int n = 1 << 11;
         decoded_inst = decoded_inst | n;
     }
-    if(*strchr(opcode,'z')!=NULL){
+    if(strchr(opcode,'z')!=NULL){
         int z = 1 << 10;
         decoded_inst = decoded_inst | z;
     }
-    if(*strchr(opcode,'p')!=NULL){
+    if(strchr(opcode,'p')!=NULL){
         int p = 1 << 9;
         decoded_inst = decoded_inst | p;
     }
