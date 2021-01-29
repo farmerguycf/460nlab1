@@ -29,14 +29,14 @@ struct table_element symbol_table[MAX_LINE_LENGTH];
 int isOpcode(char * ptr);
 int toNum(char *pStr);
 int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode, char ** pArg1, char ** pArg2, char ** pArg3, char ** pArg4);
-int get_offset(char *label){
+int get_label_offset(char *label){
     for(int i = 0; i<Table_Counter;i++){
         if(strcmp(symbol_table[i].label, label)==0){
             return symbol_table[i].address - Program_Counter;
         }
     }
     return -1;
-}
+}// branch instruction 
 int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x0000;
 
@@ -53,14 +53,14 @@ int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
         decoded_inst = decoded_inst | p;
     }
 
-    int offset = get_offset(arg1);
+    int offset = get_label_offset(arg1);
     if(offset != -1){
         return decoded_inst | offset;
     }
     else{
         // error handling
     }
-}
+}// add instruction
 int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x1000;
 
@@ -82,11 +82,34 @@ int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
         decoded_inst = decoded_inst | toNum(arg3);
     }
     return decoded_inst;
-}
+}// ldb instruction
 int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    int decoded_inst = 0x2000;
 
+    int dr = toNum(&arg1[1]);
+    dr = dr << 9;
+    decoded_inst = decoded_inst | dr;
+
+    int basereg = toNum(&arg2[1]);
+    basereg = basereg << 6;
+    decoded_inst = decoded_inst | basereg;
+
+    decoded_inst = decoded_inst | toNum(arg3);
+    return decoded_inst;
 }
 int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    int decoded_inst = 0x3000;
+
+    int dr = toNum(&arg1[1]);
+    dr = dr << 9;
+    decoded_inst = decoded_inst | dr;
+
+    int basereg = toNum(&arg2[1]);
+    basereg = basereg << 6;
+    decoded_inst = decoded_inst | basereg;
+
+    decoded_inst = decoded_inst | toNum(arg3);
+    return decoded_inst;
 
 }
 int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
@@ -115,9 +138,33 @@ int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     return decoded_inst;
 }
 int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    int decoded_inst = 0x6000;
+
+    int dr = toNum(&arg1[1]);
+    dr = dr << 9;
+    decoded_inst = decoded_inst | dr;
+
+    int basereg = toNum(&arg2[1]);
+    basereg = basereg << 6;
+    decoded_inst = decoded_inst | basereg;
+
+    decoded_inst = decoded_inst | toNum(arg3);
+    return decoded_inst;
 
 }
 int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    int decoded_inst = 0x7000;
+
+    int dr = toNum(&arg1[1]);
+    dr = dr << 9;
+    decoded_inst = decoded_inst | dr;
+
+    int basereg = toNum(&arg2[1]);
+    basereg = basereg << 6;
+    decoded_inst = decoded_inst | basereg;
+
+    decoded_inst = decoded_inst | toNum(arg3);
+    return decoded_inst;
 
 }
 int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
