@@ -27,7 +27,7 @@ struct table_element{
 struct table_element symbol_table[MAX_LINE_LENGTH];
 
 int isOpcode(char * ptr);
-int toNum(char * pStr );
+int toNum(char *pStr);
 int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode, char ** pArg1, char ** pArg2, char ** pArg3, char ** pArg4);
 int get_offset(char *label){
     for(int i = 0; i<Table_Counter;i++){
@@ -38,7 +38,7 @@ int get_offset(char *label){
     return -1;
 }
 int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
-    int decoded_inst = 0x0000000000000000;
+    int decoded_inst = 0x0000;
 
     if(strchr(opcode,'n')!=NULL){
         int n = 1 << 11;
@@ -62,19 +62,19 @@ int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
 }
 int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
-    int decoded_inst = 0x0001000000000000;
+    int decoded_inst = 0x1000;
 
-    int dr = toNum(arg1[1]);
+    int dr = toNum(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int sr1 = toNum(arg2[1]);
+    int sr1 = toNum(&arg2[1]);
     sr1 = sr1 << 6;
     decoded_inst = decoded_inst | sr1;
 
     if(arg3[0] == 'r'){
         
-        int sr2 = toNum(arg2[1]);
+        int sr2 = toNum(&arg2[1]);
         decoded_inst = decoded_inst | sr2;
     }else{
         
@@ -93,19 +93,19 @@ int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
   
 }
 int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
-    int decoded_inst = 0x0101000000000000;
+    int decoded_inst = 0x5000;
 
-    int dr = toNum(arg1[1]);
+    int dr = toNum(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int sr1 = toNum(arg2[1]);
+    int sr1 = toNum(&arg2[1]);
     sr1 = sr1 << 6;
     decoded_inst = decoded_inst | sr1;
 
     if(arg3[0] == 'r'){
         
-        int sr2 = toNum(arg2[1]);
+        int sr2 = toNum(&arg2[1]);
         decoded_inst = decoded_inst | sr2;
     }else{
         
@@ -124,22 +124,22 @@ int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
 }
 int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
-    int decoded_inst = 0x0101000000000000;
+    int decoded_inst = 0x9000;
 
-    int dr = toNum(arg1[1]);
+    int dr = toNum(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int sr1 = toNum(arg2[1]);
+    int sr1 = toNum(&arg2[1]);
     sr1 = sr1 << 6;
     decoded_inst = decoded_inst | sr1;
 
     if(strcmp(opcode, "not") == 0){
 
-        decoded_inst = decoded_inst | 0x00000000000111111;
+        decoded_inst = decoded_inst | 0x003F;
     }else if(arg3[0] == 'r'){
         
-        int sr2 = toNum(arg2[1]);
+        int sr2 = toNum(&arg2[1]);
         decoded_inst = decoded_inst | sr2;
     }else{
         
