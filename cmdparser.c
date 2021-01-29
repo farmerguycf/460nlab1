@@ -168,7 +168,7 @@ int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
 }
 int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
-
+    return 0x8000;
 }
 int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x9000;
@@ -194,18 +194,65 @@ int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
         decoded_inst = decoded_inst | toNum(arg3);
     }
     return decoded_inst;
-}
+}//jmp/ret instruction
 int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    int decoded_inst = 0xC000;
 
-}
+    if(strcmp(opcode, "ret")==0){
+        decoded_inst = decoded_inst | (7<<6);
+    }else{
+        int base_reg = toNum(&arg1[1]);
+        base_reg = base_reg << 6;
+        decoded_inst = decoded_inst | base_reg;
+    }
+    return decoded_inst;
+
+}//shft inst
 int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    int decoded_inst = 0xD000;
 
+    int dr = toNum(&arg1[1]);
+    dr = dr << 9;
+    decoded_inst = decoded_inst | dr;
+
+    int sr = toNum(&arg2[1]);
+    sr = sr << 6;
+    decoded_inst = decoded_inst | sr;
+
+    if(strcmp(opcode, "lshf")==0){
+        decoded_inst = decoded_inst | toNum(arg3);
+    }else if(strcmp(opcode, "rshfl")==0){
+        decoded_inst = decoded_inst | (1<<4);
+        decoded_inst = decoded_inst | toNum(arg3);
+    }else{
+        decoded_inst = decoded_inst | (3<<4);
+        decoded_inst = decoded_inst | toNum(arg3);
+    }
+
+    return decoded_inst;
 }
 int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    int decoded_inst = 0xE000;
 
-}
+    int dr = toNum(&arg1[1]);
+    dr = dr << 9;
+    decoded_inst = decoded_inst | dr;
+
+    int offset = get_label_offset(arg1);
+    if(offset != -1){
+        return decoded_inst | offset;
+    }
+    else{
+        // error handling
+    }
+
+}//trap instruction
 int inst15(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+  int decoded_inst = 0xF000;
 
+  decoded_inst = decoded_inst | toNum(arg1);
+
+  return decoded_inst;
 }
 
 int
@@ -246,7 +293,8 @@ main(int argc, char* argv[]) {
       lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
       if( lRet != DONE && lRet != EMPTY_LINE ){
         // if .orig then record the starting address
-        // else add to the program counter 
+        // else add to the program counter  )        /* hex     */
+  {
         if(strcmp(lOpcode, ".orig")==0){
           Orig = toNum(lArg1);
           Program_Counter = Orig;
@@ -372,10 +420,8 @@ toNum( char * pStr )
   char * t_ptr;
   char * orig_pStr;
   int t_length,k;
-  int lNum, lNeg = 0;
-  long int lNumLong;
-
-  orig_pStr = pStr;
+  int lNum, lNeg = 0; )        /* hex     */
+  {
   if( *pStr == '#' )                                /* decimal */
   {
     pStr++;
