@@ -113,7 +113,22 @@ int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
 }
 int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
-  
+    int decoded_inst = 0x4000;
+
+    if(strcmp(opcode, "jsr")==0){
+        decoded_inst = decoded_inst | (1<<11);
+        int offset = get_label_offset(arg1);
+        if(offset != -1){
+            return decoded_inst | offset;
+        }
+        else{
+            // error handling
+        }
+
+    }else{
+        decoded_inst = decoded_inst | (toNum(&arg1[1])<<6);
+    }
+    return decoded_inst;
 }
 int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x5000;
@@ -294,7 +309,7 @@ main(int argc, char* argv[]) {
       if( lRet != DONE && lRet != EMPTY_LINE ){
         // if .orig then record the starting address
         // else add to the program counter  )        /* hex     */
-  {
+  
         if(strcmp(lOpcode, ".orig")==0){
           Orig = toNum(lArg1);
           Program_Counter = Orig;
@@ -420,8 +435,9 @@ toNum( char * pStr )
   char * t_ptr;
   char * orig_pStr;
   int t_length,k;
-  int lNum, lNeg = 0; )        /* hex     */
-  {
+  int lNum, lNeg = 0;          /* hex     */
+  long int lNumLong;
+    orig_pStr = pStr;
   if( *pStr == '#' )                                /* decimal */
   {
     pStr++;
