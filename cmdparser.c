@@ -344,14 +344,17 @@ main(int argc, char* argv[]) {
            Program_Counter++;
            Program_Counter++;
            int num_to_file;
-        if(!isOpcode(lOpcode)){
+        if(isOpcode(lOpcode)==1){
           if(strcmp(lOpcode, "add")==0){
             num_to_file = inst1(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "and")==0){
             num_to_file = inst5(lOpcode, lArg1, lArg2, lArg3, lArg4);
             
-          }else if(strcmp(lOpcode, "br")==0){
+          }else if((strcmp(lOpcode, "br")==0)||(strcmp(lOpcode, "brp")==0)
+          ||(strcmp(lOpcode, "brn")==0)||(strcmp(lOpcode, "brz")==0)
+          ||(strcmp(lOpcode, "brnz")==0)||(strcmp(lOpcode, "brnp")==0)
+          ||(strcmp(lOpcode, "brzp")==0)||(strcmp(lOpcode, "brnzp")==0)){
             num_to_file = inst0(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "jmp")==0){
@@ -502,7 +505,10 @@ int isOpcode(char * ptr){
   }else if(strcmp(ptr, "and")==0){
     return 1;
 
-  }else if(strcmp(ptr, "br")==0){
+  }else if((strcmp(ptr, "br")==0)||(strcmp(ptr, "brp")==0)
+          ||(strcmp(ptr, "brn")==0)||(strcmp(ptr, "brz")==0)
+          ||(strcmp(ptr, "brnz")==0)||(strcmp(ptr, "brnp")==0)
+          ||(strcmp(ptr, "brzp")==0)||(strcmp(ptr, "brnzp")==0)){
     return 1;
 
   }else if(strcmp(ptr, "jmp")==0){
