@@ -64,17 +64,17 @@ int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x1000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int sr1 = toNum(&arg2[1]);
+    int sr1 = getRegNumber(&arg2[1]);
     sr1 = sr1 << 6;
     decoded_inst = decoded_inst | sr1;
 
     if(arg3[0] == 'r'){
         
-        int sr2 = toNum(&arg2[1]);
+        int sr2 = getRegNumber(&arg2[1]);
         decoded_inst = decoded_inst | sr2;
     }else{
         
@@ -86,11 +86,11 @@ int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x2000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int basereg = toNum(&arg2[1]);
+    int basereg = getRegNumber(&arg2[1]);
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
@@ -100,11 +100,11 @@ int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x3000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int basereg = toNum(&arg2[1]);
+    int basereg = getRegNumber(&arg2[1]);
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
@@ -126,24 +126,24 @@ int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
         }
 
     }else{
-        decoded_inst = decoded_inst | (toNum(&arg1[1])<<6);
+        decoded_inst = decoded_inst | (getRegNumber(&arg1[1])<<6);
     }
     return decoded_inst;
 }
 int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x5000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int sr1 = toNum(&arg2[1]);
+    int sr1 = getRegNumber(&arg2[1]);
     sr1 = sr1 << 6;
     decoded_inst = decoded_inst | sr1;
 
     if(arg3[0] == 'r'){
         
-        int sr2 = toNum(&arg2[1]);
+        int sr2 = getRegNumber(&arg2[1]);
         decoded_inst = decoded_inst | sr2;
     }else{
         
@@ -155,11 +155,11 @@ int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x6000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int basereg = toNum(&arg2[1]);
+    int basereg = getRegNumber(&arg2[1]);
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
@@ -170,11 +170,11 @@ int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x7000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int basereg = toNum(&arg2[1]);
+    int basereg = getRegNumber(&arg2[1]);
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
@@ -188,11 +188,11 @@ int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x9000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int sr1 = toNum(&arg2[1]);
+    int sr1 = getRegNumber(&arg2[1]);
     sr1 = sr1 << 6;
     decoded_inst = decoded_inst | sr1;
 
@@ -201,7 +201,7 @@ int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
         decoded_inst = decoded_inst | 0x003F;
     }else if(arg3[0] == 'r'){
         
-        int sr2 = toNum(&arg2[1]);
+        int sr2 = getRegNumber(&arg2[1]);
         decoded_inst = decoded_inst | sr2;
     }else{
         
@@ -216,7 +216,7 @@ int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     if(strcmp(opcode, "ret")==0){
         decoded_inst = decoded_inst | (7<<6);
     }else{
-        int base_reg = toNum(&arg1[1]);
+        int base_reg = getRegNumber(&arg1[1]);
         base_reg = base_reg << 6;
         decoded_inst = decoded_inst | base_reg;
     }
@@ -226,11 +226,11 @@ int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0xD000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int sr = toNum(&arg2[1]);
+    int sr = getRegNumber(&arg2[1]);
     sr = sr << 6;
     decoded_inst = decoded_inst | sr;
 
@@ -249,7 +249,7 @@ int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0xE000;
 
-    int dr = toNum(&arg1[1]);
+    int dr = getRegNumber(&arg1[1]);
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
@@ -341,11 +341,7 @@ main(int argc, char* argv[]) {
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
-           Program_Counter++;
-           Program_Counter++;
-           int num_to_file;
-        if(isOpcode(lOpcode)==1){
-          if(strcmp(lOpcode, "add")==0){
+           Program_Counter++;getRegNumber
             num_to_file = inst1(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "and")==0){
@@ -428,6 +424,34 @@ main(int argc, char* argv[]) {
     fclose(infile);
     fclose(outfile);
 }
+
+int getRegNumber(char * pStr){
+  char * orig_pStr;
+  char * t_ptr;
+  char * orig_pStr;
+  int t_length,k;
+  int lNum, lNeg = 0;          /* hex     */
+  long int lNumLong;
+  orig_pStr = pStr;
+  t_length = strlen(t_ptr);
+  t_ptr = pStr;
+  for(k=0;k < t_length;k++)
+  {
+    if (!isdigit(*t_ptr))
+    {
+      printf("Error: invalid decimal operand, %s\n",orig_pStr);
+      exit(4);
+    }
+    t_ptr++;
+  }
+  lNum = atoi(pStr);
+  if (lNeg)
+    lNum = -lNum;
+
+  return lNum;
+  }
+}
+
 int
 toNum( char * pStr )
 {
