@@ -21,7 +21,7 @@ FILE* infile = NULL;
 FILE* outfile = NULL;
 
 struct table_element{
-    char label[MAX_LINE_LENGTH];
+    char * label;
     int address;
 };
 struct table_element symbol_table[MAX_LINE_LENGTH];
@@ -33,7 +33,7 @@ int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode,
 int get_label_offset(char *label){
     for(int i = 0; i<Table_Counter;i++){
         if(strcmp(symbol_table[i].label, label)==0){
-            return symbol_table[i].address - Program_Counter;
+            return (symbol_table[i].address - Program_Counter)/2;
         }
     }
     return -1;
@@ -254,7 +254,7 @@ int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
-    int offset = get_label_offset(arg1);
+    int offset = get_label_offset(arg2);
     if(offset != -1){
         return decoded_inst | offset;
     }
@@ -319,7 +319,9 @@ main(int argc, char* argv[]) {
           if(strcmp(lLabel,"")!=0){
 
             struct table_element elem;
+            elem.label = malloc(sizeof(char) * (strlen(lLabel)));
             strcpy(elem.label, lLabel);
+            elem.label[strlen(lLabel)] = '\0';
             elem.address = Program_Counter;
             symbol_table[Table_Counter] = elem;
 	    Table_Counter++;
@@ -411,6 +413,8 @@ main(int argc, char* argv[]) {
           }
         }else{
           if(strcmp(lOpcode, ".orig")==0){
+            Orig = toNum(lArg1);
+            Program_Counter = Orig;
             num_to_file = toNum(lArg1);
           }else if(strcmp(lOpcode, ".end")==0){
             // do nothing
@@ -431,28 +435,33 @@ main(int argc, char* argv[]) {
 }
 
 int getRegNumber(char * pStr){
-  char * orig_pStr;
-  char * t_ptr;
-  int t_length,k;
-  int lNum, lNeg = 0;          /* hex     */
-  long int lNumLong;
-  orig_pStr = pStr;
-  t_length = strlen(t_ptr);
-  t_ptr = pStr;
-  for(k=0;k < t_length;k++)
-  {
-    if (!isdigit(*t_ptr))
-    {
-      printf("Error: invalid decimal operand, %s\n",orig_pStr);
-      exit(4);
-    }
-    t_ptr++;
+  if(strcmp(pStr, "0") == 0){
+    return 0;
   }
-  lNum = atoi(pStr);
-  if (lNeg)
-    lNum = -lNum;
-
-  return lNum;
+  else if(strcmp(pStr, "1") == 0){
+    return 1;
+  }
+  else if(strcmp(pStr, "2") == 0){
+    return 2;
+  }
+  else if(strcmp(pStr, "3") == 0){
+    return 3;
+  }
+  else if(strcmp(pStr, "4") == 0){
+    return 4;
+  }
+  else if(strcmp(pStr, "5") == 0){
+    return 5;
+  }
+  else if(strcmp(pStr, "6") == 0){
+    return 6;
+  }
+  else if(strcmp(pStr, "7") == 0){
+    return 7;
+  }
+  else{
+    return -1;
+  }
   
 }
 

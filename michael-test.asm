@@ -1,6 +1,6 @@
 	.ORIG x3000
 	LEA R0, A
-	LDW R1, R0
+	LDW R1, R0, #0
 	AND R2, R2, #0
 LOOP	ADD R2, R2, #1
 	RSHFA R1, R1, #1
