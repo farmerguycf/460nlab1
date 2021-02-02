@@ -28,6 +28,7 @@ struct table_element symbol_table[MAX_LINE_LENGTH];
 
 int isOpcode(char * ptr);
 int toNum(char *pStr);
+int getRegNumber(char * pStr);
 int readAndParse( FILE * pInfile, char * pLine, char ** pLabel, char ** pOpcode, char ** pArg1, char ** pArg2, char ** pArg3, char ** pArg4);
 int get_label_offset(char *label){
     for(int i = 0; i<Table_Counter;i++){
@@ -341,8 +342,12 @@ main(int argc, char* argv[]) {
     do{
        lRet = readAndParse( infile, lLine, &lLabel, &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
        if( lRet != DONE && lRet != EMPTY_LINE ){
-           Program_Counter++;getRegNumber
-            num_to_file = inst1(lOpcode, lArg1, lArg2, lArg3, lArg4);
+           Program_Counter++;
+           Program_Counter++;
+           int num_to_file;
+           if(isOpcode(lOpcode)==1){
+             if(strcmp(lOpcode,"add")==0){
+               num_to_file = inst1(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "and")==0){
             num_to_file = inst5(lOpcode, lArg1, lArg2, lArg3, lArg4);
@@ -428,7 +433,6 @@ main(int argc, char* argv[]) {
 int getRegNumber(char * pStr){
   char * orig_pStr;
   char * t_ptr;
-  char * orig_pStr;
   int t_length,k;
   int lNum, lNeg = 0;          /* hex     */
   long int lNumLong;
@@ -449,7 +453,7 @@ int getRegNumber(char * pStr){
     lNum = -lNum;
 
   return lNum;
-  }
+  
 }
 
 int
