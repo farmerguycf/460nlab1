@@ -343,84 +343,80 @@ main(int argc, char* argv[]) {
        if( lRet != DONE && lRet != EMPTY_LINE ){
            Program_Counter++;
            Program_Counter++;
+           int num_to_file;
         if(!isOpcode(lOpcode)){
           if(strcmp(lOpcode, "add")==0){
-              inst1(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst1(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "and")==0){
-            inst5(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst5(lOpcode, lArg1, lArg2, lArg3, lArg4);
             
           }else if(strcmp(lOpcode, "br")==0){
-            inst0(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst0(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "jmp")==0){
-            inst12(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst12(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "jsr")==0){
-            inst4(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst4(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "jsrr")==0){
-            inst4(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst4(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "ldb")==0){
-            inst2(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst2(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "ldw")==0){
-            inst6(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst6(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "lea")==0){
-            inst14(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst14(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "not")==0){
-            inst9(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst9(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "ret")==0){
-            inst12(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst12(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "lshf")==0){
-            inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "rshfl")==0){
-            inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "rshfa")==0){
-            inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst13(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "stb")==0){
-            inst3(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst3(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "stw")==0){
-            inst7(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst7(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "trap")==0){
-            inst15(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst15(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
           }else if(strcmp(lOpcode, "xor")==0){
-            inst9(lOpcode, lArg1, lArg2, lArg3, lArg4);
+            num_to_file = inst9(lOpcode, lArg1, lArg2, lArg3, lArg4);
 
-          }else{
+          }else if(strcmp(lOpcode,"nop")==0){
+            num_to_file = 0;
+          }
+          else{
             //error
           }
         }else{
           if(strcmp(lOpcode, ".orig")==0){
-
-
+            num_to_file = toNum(lArg1);
           }else if(strcmp(lOpcode, ".end")==0){
-
-
+            // do nothing
           }else if(strcmp(lOpcode, ".fill")==0){
-
+            num_to_file = toNum(lArg1);
           }else{
             //error
           }
         }
-
-        if(!*lArg2){
-
-          int num_to_file = toNum(lArg1);
-	        fprintf( outfile, "0x%.4X\n", num_to_file);
-	      
-        }
+         fprintf( outfile, "0x%.4X\n", num_to_file);
       }
     } while( lRet != DONE );
 
