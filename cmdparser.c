@@ -36,6 +36,7 @@ int get_label_offset(char *label){
             return (symbol_table[i].address - Program_Counter)/2;
         }
     }
+    exit(1);
     return -1;
 }// branch instruction 
 int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
@@ -55,13 +56,15 @@ int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
 
     int offset = get_label_offset(arg1);
-    if(offset != -1){
-        offset = offset & 0x01FF;
-        return decoded_inst | offset;
-    }
-    else{
-        // error handling
-    }
+    if(offset < -256 || offset > 255){
+      exit(4);
+      return -1;
+      }
+    offset = offset & 0x01FF;
+    
+    return decoded_inst | offset;
+    
+
 }// add instruction
 int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x1000;
@@ -101,7 +104,7 @@ int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
     decoded_inst = decoded_inst | offset;
     return decoded_inst;
-}
+}// stb instruction
 int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x3000;
 
@@ -118,26 +121,26 @@ int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
-}
+}// jsr / jsrr instruction
 int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x4000;
 
     if(strcmp(opcode, "jsr")==0){
         decoded_inst = decoded_inst | (1<<11);
         int offset = get_label_offset(arg1);
-        if(offset != -1){
-            offset = offset & 0x07FF;
-            return decoded_inst | offset;
+        if(offset < -1024 || offset > 1023){
+          exit(4);
         }
-        else{
-            // error handling
-        }
+        offset = offset & 0x07FF;
+        return decoded_inst | offset;
+        
+
 
     }else{
         decoded_inst = decoded_inst | (getRegNumber(&arg1[1])<<6);
     }
     return decoded_inst;
-}
+} // and instruction
 int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x5000;
 
@@ -160,7 +163,7 @@ int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
         decoded_inst = decoded_inst | amount5;
     }
     return decoded_inst;
-}
+}// ldw instruction
 int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x6000;
 
@@ -176,7 +179,7 @@ int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
-}
+}// stw instruction
 int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x7000;
 
@@ -193,10 +196,10 @@ int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
-}
+}// rti instruction
 int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     return 0x8000;
-}
+}// xor / nor instruction
 int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x9000;
 
@@ -259,7 +262,7 @@ int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
 
     return decoded_inst;
-}
+}// lea instruction
 int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0xE000;
 
@@ -268,13 +271,13 @@ int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     decoded_inst = decoded_inst | dr;
 
     int offset = get_label_offset(arg2);
-    if(offset != -1){
-        offset = offset & 0x01FF;
-        return decoded_inst | offset;
+    if(offset < -256 || offset > 255){
+      exit(4);
+      return -1;
     }
-    else{
-        // error handling
-    }
+    offset = offset & 0x01FF;
+    return decoded_inst | offset;
+    
 
 }//trap instruction
 int inst15(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
@@ -331,7 +334,11 @@ main(int argc, char* argv[]) {
         }else{
 
           if(strcmp(lLabel,"")!=0){
-
+            for(int x = 0; x <Table_Counter;x++){
+              if(strcmp(lLabel,symbol_table[x].label)==0 || isOpcode(lLabel)==1){
+                exit(4);
+              }
+            }
             struct table_element elem;
             elem.label = malloc(sizeof(char) * (strlen(lLabel)));
             strcpy(elem.label, lLabel);
@@ -423,7 +430,8 @@ main(int argc, char* argv[]) {
             num_to_file = 0;
           }
           else{
-            //error
+            // invalid opcode error
+            exit(2);
           }
         }else{
           if(strcmp(lOpcode, ".orig")==0){
@@ -433,10 +441,12 @@ main(int argc, char* argv[]) {
           }else if(strcmp(lOpcode, ".end")==0){
             // do nothing
             num_to_file = -1;
+            lRet = DONE;
           }else if(strcmp(lOpcode, ".fill")==0){
             num_to_file = toNum(lArg1);
           }else{
             //error
+            exit(4);
           }
         }
         if(num_to_file != -1){
