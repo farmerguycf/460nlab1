@@ -56,6 +56,7 @@ int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
     int offset = get_label_offset(arg1);
     if(offset != -1){
+        offset = offset & 0x01FF;
         return decoded_inst | offset;
     }
     else{
@@ -80,7 +81,8 @@ int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }else{
         
         decoded_inst = decoded_inst | (1<<5);
-        decoded_inst = decoded_inst | toNum(arg3);
+        int amount5 = toNum(arg3) & 0x001F;
+        decoded_inst = decoded_inst | amount5;
     }
     return decoded_inst;
 }// ldb instruction
@@ -95,7 +97,9 @@ int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
-    decoded_inst = decoded_inst | toNum(arg3);
+    int offset = toNum(arg3) & 0x003F;
+
+    decoded_inst = decoded_inst | offset;
     return decoded_inst;
 }
 int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
@@ -109,7 +113,9 @@ int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
-    decoded_inst = decoded_inst | toNum(arg3);
+    int offset = toNum(arg3) & 0x003F;
+
+    decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
 }
@@ -120,6 +126,7 @@ int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
         decoded_inst = decoded_inst | (1<<11);
         int offset = get_label_offset(arg1);
         if(offset != -1){
+            offset = offset & 0x07FF;
             return decoded_inst | offset;
         }
         else{
@@ -149,7 +156,8 @@ int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }else{
         
         decoded_inst = decoded_inst | (1<<5);
-        decoded_inst = decoded_inst | toNum(arg3);
+        int amount5 = toNum(arg3) & 0x001F;
+        decoded_inst = decoded_inst | amount5;
     }
     return decoded_inst;
 }
@@ -164,7 +172,8 @@ int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
-    decoded_inst = decoded_inst | toNum(arg3);
+    int offset = toNum(arg3) & 0x003F;
+    decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
 }
@@ -179,7 +188,9 @@ int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
-    decoded_inst = decoded_inst | toNum(arg3);
+    int offset = toNum(arg3) & 0x003F;
+
+    decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
 }
@@ -207,7 +218,8 @@ int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }else{
         
         decoded_inst = decoded_inst | (1<<5);
-        decoded_inst = decoded_inst | toNum(arg3);
+        int offset = toNum(arg3) & 0x001F;
+        decoded_inst = decoded_inst | offset;
     }
     return decoded_inst;
 }//jmp/ret instruction
@@ -224,6 +236,7 @@ int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     return decoded_inst;
 
 }//shft inst
+//Error for Negative number in shift amount
 int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0xD000;
 
@@ -256,6 +269,7 @@ int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
     int offset = get_label_offset(arg2);
     if(offset != -1){
+        offset = offset & 0x01FF;
         return decoded_inst | offset;
     }
     else{
@@ -418,13 +432,16 @@ main(int argc, char* argv[]) {
             num_to_file = toNum(lArg1);
           }else if(strcmp(lOpcode, ".end")==0){
             // do nothing
+            num_to_file = -1;
           }else if(strcmp(lOpcode, ".fill")==0){
             num_to_file = toNum(lArg1);
           }else{
             //error
           }
         }
-         fprintf( outfile, "0x%.4X\n", num_to_file);
+        if(num_to_file != -1){
+          fprintf( outfile, "0x%.4X\n", num_to_file);
+        }
       }
     } while( lRet != DONE );
 
