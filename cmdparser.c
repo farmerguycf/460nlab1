@@ -39,7 +39,11 @@ int get_label_offset(char *label){
     exit(1);
     return -1;
 }// branch instruction 
+//1 Operand Expected
 int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    if((arg1 == NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+      exit(4);
+    }
     int decoded_inst = 0x0000;
 
     if(strchr(opcode,'n')!=NULL){
@@ -66,7 +70,13 @@ int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     
 
 }// add instruction
+//3 Operands Expected
 int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0x1000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -84,12 +94,22 @@ int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }else{
         
         decoded_inst = decoded_inst | (1<<5);
-        int amount5 = toNum(arg3) & 0x001F;
+        int amount5 = toNum(arg3);
+        if(amount5 > 15 || amount5 < -16){
+          exit(3);
+        }
+        amount5 = amount5  & 0x001F;
         decoded_inst = decoded_inst | amount5;
     }
     return decoded_inst;
 }// ldb instruction
+// 3 Operands Expected
 int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0x2000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -100,12 +120,23 @@ int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
-    int offset = toNum(arg3) & 0x003F;
 
+    int offset = toNum(arg3);
+    if(offset > 31 || offset < -32){
+          exit(3);
+    }
+
+    offset = offset & 0x003F;
     decoded_inst = decoded_inst | offset;
     return decoded_inst;
 }// stb instruction
+// 3 Operands Expected
 int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0x3000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -116,14 +147,24 @@ int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
-    int offset = toNum(arg3) & 0x003F;
+    int offset = toNum(arg3);
+    if(offset > 31 || offset < -32){
+          exit(3);
+    }
+
+    offset = offset & 0x003F;
 
     decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
 }// jsr / jsrr instruction
+//1 Operand
 int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x4000;
+
+    if((arg1 == NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+      exit(4);
+    }
 
     if(strcmp(opcode, "jsr")==0){
         decoded_inst = decoded_inst | (1<<11);
@@ -141,7 +182,13 @@ int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
     return decoded_inst;
 } // and instruction
+// 3 Operands Expected
 int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0x5000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -159,12 +206,22 @@ int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }else{
         
         decoded_inst = decoded_inst | (1<<5);
-        int amount5 = toNum(arg3) & 0x001F;
+        int amount5 = toNum(arg3);
+        if(amount5 > 15 || amount5 < -16){
+          exit(3);
+        }
+        amount5 = amount5  & 0x001F;
         decoded_inst = decoded_inst | amount5;
     }
     return decoded_inst;
 }// ldw instruction
+// 3 Operands Expected
 int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0x6000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -175,12 +232,23 @@ int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
-    int offset = toNum(arg3) & 0x003F;
+    int offset = toNum(arg3);
+    if(offset > 31 || offset < -32){
+          exit(3);
+    }
+
+    offset = offset & 0x003F;
     decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
 }// stw instruction
+// 3 Operands Expected
 int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0x7000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -191,16 +259,32 @@ int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
-    int offset = toNum(arg3) & 0x003F;
+    int offset = toNum(arg3);
+    if(offset > 31 || offset < -32){
+          exit(3);
+    }
+
+    offset = offset & 0x003F;
 
     decoded_inst = decoded_inst | offset;
     return decoded_inst;
 
 }// rti instruction
+//no operands
 int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+    if((arg1 != NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     return 0x8000;
 }// xor / nor instruction
+//3 operands
 int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0x9000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -221,17 +305,31 @@ int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }else{
         
         decoded_inst = decoded_inst | (1<<5);
-        int offset = toNum(arg3) & 0x001F;
-        decoded_inst = decoded_inst | offset;
+        int amount5 = toNum(arg3);
+        if(amount5 > 15 || amount5 < -16){
+          exit(3);
+        }
+        amount5 = amount5 & 0x001F;
+        decoded_inst = decoded_inst | amount5;
     }
     return decoded_inst;
 }//jmp/ret instruction
+//1 operand unless ret
 int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0xC000;
 
     if(strcmp(opcode, "ret")==0){
+        if((arg1 != NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+          exit(4);
+        }
+
         decoded_inst = decoded_inst | (7<<6);
     }else{
+
+        if((arg1 == NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+          exit(4);
+        }
+
         int base_reg = getRegNumber(&arg1[1]);
         base_reg = base_reg << 6;
         decoded_inst = decoded_inst | base_reg;
@@ -240,7 +338,13 @@ int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
 }//shft inst
 //Error for Negative number in shift amount
+// 3 Operands Expected
 int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0xD000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -252,18 +356,45 @@ int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     decoded_inst = decoded_inst | sr;
 
     if(strcmp(opcode, "lshf")==0){
-        decoded_inst = decoded_inst | toNum(arg3);
+        int amount4 = toNum(arg3);
+        if(amount4 < 0){
+          exit(4);
+        }
+        if(amount4 > 15){
+          exit(3);
+        }
+        decoded_inst = decoded_inst | amount4;
     }else if(strcmp(opcode, "rshfl")==0){
         decoded_inst = decoded_inst | (1<<4);
-        decoded_inst = decoded_inst | toNum(arg3);
+        int amount4 = toNum(arg3);
+        if(amount4 < 0){
+          exit(4);
+        }
+        if(amount4 > 15){
+          exit(3);
+        }
+        decoded_inst = decoded_inst | amount4;
     }else{
         decoded_inst = decoded_inst | (3<<4);
-        decoded_inst = decoded_inst | toNum(arg3);
+        int amount4 = toNum(arg3);
+        if(amount4 < 0){
+          exit(4);
+        }
+        if(amount4 > 15){
+          exit(3);
+        }
+        decoded_inst = decoded_inst | amount4;
     }
 
     return decoded_inst;
 }// lea instruction
+//2 Operands
 int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
+
+    if((arg1 == NULL) || (arg2 == NULL) || (arg3 != NULL) || (arg4 != NULL)){
+      exit(4);
+    }
+
     int decoded_inst = 0xE000;
 
     int dr = getRegNumber(&arg1[1]);
@@ -280,8 +411,13 @@ int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     
 
 }//trap instruction
+//1 Operand
 int inst15(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
   int decoded_inst = 0xF000;
+
+  if((arg1 == NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+    exit(4);
+  }
 
   decoded_inst = decoded_inst | toNum(arg1);
 
@@ -330,6 +466,9 @@ main(int argc, char* argv[]) {
   
         if(strcmp(lOpcode, ".orig")==0){
           Orig = toNum(lArg1);
+          if(Orig % 2 != 0){
+            exit(3);
+          }
           Program_Counter = Orig;
         }else{
 
@@ -443,6 +582,9 @@ main(int argc, char* argv[]) {
             num_to_file = -1;
             lRet = DONE;
           }else if(strcmp(lOpcode, ".fill")==0){
+            if((lArg1 == NULL) || (lArg2 != NULL) || (lArg3 != NULL) || (lArg4 != NULL)){
+              exit(4);
+            }
             num_to_file = toNum(lArg1);
           }else{
             //error
