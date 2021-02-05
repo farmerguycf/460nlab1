@@ -26,6 +26,7 @@ struct table_element{
 };
 struct table_element symbol_table[MAX_LINE_LENGTH];
 
+void isReg(char * ptr);
 int isOpcode(char * ptr);
 int toNum(char *pStr);
 int getRegNumber(char * pStr);
@@ -78,18 +79,30 @@ int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
 
     int decoded_inst = 0x1000;
-
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
+    isReg(arg2);
     int sr1 = getRegNumber(&arg2[1]);
+    if(sr1>7||sr1<0){
+      exit(4);
+    }
     sr1 = sr1 << 6;
+    
     decoded_inst = decoded_inst | sr1;
 
+    
     if(arg3[0] == 'r'){
-        
-        int sr2 = getRegNumber(&arg2[1]);
+        isReg(arg3);
+        int sr2 = getRegNumber(&arg3[1]);
+        if(sr2>7||sr2<0){
+          exit(4);
+        }
         decoded_inst = decoded_inst | sr2;
     }else{
         
@@ -111,12 +124,19 @@ int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
 
     int decoded_inst = 0x2000;
-
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
+    isReg(arg2);
     int basereg = getRegNumber(&arg2[1]);
+    if(basereg>7||basereg<0){
+      exit(4);
+    }
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
@@ -138,12 +158,19 @@ int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
 
     int decoded_inst = 0x3000;
-
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
+    isReg(arg2);
     int basereg = getRegNumber(&arg2[1]);
+    if(basereg>7||basereg<0){
+      exit(4);
+    }
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
@@ -191,17 +218,28 @@ int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
     int decoded_inst = 0x5000;
 
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
+    isReg(arg2);
     int sr1 = getRegNumber(&arg2[1]);
+    if(sr1>7||sr1<0){
+      exit(4);
+    }
     sr1 = sr1 << 6;
     decoded_inst = decoded_inst | sr1;
 
     if(arg3[0] == 'r'){
-        
+        isReg(arg2);        
         int sr2 = getRegNumber(&arg2[1]);
+        if(sr2>7||sr2<0){
+      exit(4);
+    }
         decoded_inst = decoded_inst | sr2;
     }else{
         
@@ -223,12 +261,19 @@ int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
 
     int decoded_inst = 0x6000;
-
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
+    isReg(arg2);
     int basereg = getRegNumber(&arg2[1]);
+    if(basereg>7||basereg<0){
+      exit(4);
+    }
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
@@ -250,12 +295,19 @@ int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     }
 
     int decoded_inst = 0x7000;
-
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
+    isReg(arg2);
     int basereg = getRegNumber(&arg2[1]);
+    if(basereg>7||basereg<0){
+      exit(4);
+    }
     basereg = basereg << 6;
     decoded_inst = decoded_inst | basereg;
 
@@ -287,11 +339,19 @@ int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
     int decoded_inst = 0x9000;
 
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
+    isReg(arg2);
     int sr1 = getRegNumber(&arg2[1]);
+    if(sr1>7||sr1<0){
+      exit(4);
+    }
     sr1 = sr1 << 6;
     decoded_inst = decoded_inst | sr1;
 
@@ -300,7 +360,11 @@ int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
         decoded_inst = decoded_inst | 0x003F;
     }else if(arg3[0] == 'r'){
         
+        isReg(arg2);
         int sr2 = getRegNumber(&arg2[1]);
+        if(sr2>7||sr2<0){
+          exit(4);
+        }
         decoded_inst = decoded_inst | sr2;
     }else{
         
@@ -330,7 +394,11 @@ int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
           exit(4);
         }
 
+        isReg(arg1);
         int base_reg = getRegNumber(&arg1[1]);
+        if(base_reg>7||base_reg<0){
+          exit(4);
+        }
         base_reg = base_reg << 6;
         decoded_inst = decoded_inst | base_reg;
     }
@@ -347,11 +415,19 @@ int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
     int decoded_inst = 0xD000;
 
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
+    isReg(arg2);
     int sr = getRegNumber(&arg2[1]);
+    if(sr>7||sr<0){
+      exit(4);
+    }
     sr = sr << 6;
     decoded_inst = decoded_inst | sr;
 
@@ -397,7 +473,11 @@ int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
     int decoded_inst = 0xE000;
 
+    isReg(arg1);
     int dr = getRegNumber(&arg1[1]);
+    if(dr>7||dr<0){
+      exit(4);
+    }
     dr = dr << 9;
     decoded_inst = decoded_inst | dr;
 
@@ -765,6 +845,18 @@ int isOpcode(char * ptr){
   }
   
   return -1;
+}
+
+void isReg(char * ptr){
+  if(ptr[0]!= 'r'){
+    exit(4);
+  }
+  if(strlen(ptr)>2){
+    exit(4);
+  }
+  if(ptr[1]<'0' || ptr[1]>'7'){
+    exit(4);
+  }
 }
 
 
