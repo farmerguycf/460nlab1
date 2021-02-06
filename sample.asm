@@ -6,8 +6,8 @@
 label 	add r1, r1, #5
 	br  label
 second  add r4, r4, #0
-	ldw r2, num	
+	ldw r2, r2, #3	
 	halt
 
-num	.fill 0x1500
+num	.fill x1500
 .end

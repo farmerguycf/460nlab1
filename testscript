@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "running tests" 
+
+
+
+
+touch outputs/realOutput.obj
+touch outputs/difference.txt
+touch outputs/testOutput.obj
+
+for assembly_file in michael-test.asm sample.asm
+do
+
+        ./assembler.linux $assembly_file outputs/realOutput.obj
+        echo "test $assembly_file real results above">> outputs/realOutput.obj
+
+        ./assemble $assembly_file outputs/testOutput.obj
+        echo "test $assembly_file lab results above" >> outputs/testOutput.obj
+
+        echo "writing $assembly_file difference below">> outputs/difference.txt
+        diff outputs/realOutput.obj outputs/testOutput.obj >> outputs/difference.txt
+        echo "$assembly_file test complete" >> outputs/difference.txt
+done
