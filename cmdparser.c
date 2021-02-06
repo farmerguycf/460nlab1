@@ -42,7 +42,7 @@ int get_label_offset(char *label){
 }// branch instruction 
 //1 Operand Expected
 int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
-    if((arg1 == NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")!=0) || (strcmp(arg3, "")!=0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
     int decoded_inst = 0x0000;
@@ -74,7 +74,7 @@ int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 //3 Operands Expected
 int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -119,7 +119,7 @@ int inst1(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 // 3 Operands Expected
 int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -153,7 +153,7 @@ int inst2(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 // 3 Operands Expected
 int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -189,7 +189,7 @@ int inst3(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0x4000;
 
-    if((arg1 == NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")!=0) || (strcmp(arg3, "")!=0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -212,7 +212,7 @@ int inst4(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 // 3 Operands Expected
 int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -256,7 +256,7 @@ int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 // 3 Operands Expected
 int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -290,7 +290,7 @@ int inst6(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 // 3 Operands Expected
 int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -324,7 +324,7 @@ int inst7(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 }// rti instruction
 //no operands
 int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
-    if((arg1 != NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")!=0) || (strcmp(arg2, "")!=0) || (strcmp(arg3, "")!=0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -333,7 +333,7 @@ int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 //3 operands
 int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -383,14 +383,14 @@ int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     int decoded_inst = 0xC000;
 
     if(strcmp(opcode, "ret")==0){
-        if((arg1 != NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+        if((strcmp(arg1, "")!=0) || (strcmp(arg2, "")!=0) || (strcmp(arg3, "")!=0) || (strcmp(arg4, "")!=0)){
           exit(4);
         }
 
         decoded_inst = decoded_inst | (7<<6);
     }else{
 
-        if((arg1 == NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+        if((strcmp(arg1, "")==0) || (strcmp(arg2, "")!=0) || (strcmp(arg3, "")!=0) || (strcmp(arg4, "")!=0)){
           exit(4);
         }
 
@@ -409,7 +409,7 @@ int inst12(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 // 3 Operands Expected
 int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 == NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -467,7 +467,7 @@ int inst13(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 //2 Operands
 int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((arg1 == NULL) || (arg2 == NULL) || (arg3 != NULL) || (arg4 != NULL)){
+    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")!=0) || (strcmp(arg4, "")!=0)){
       exit(4);
     }
 
@@ -495,7 +495,7 @@ int inst14(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 int inst15(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
   int decoded_inst = 0xF000;
 
-  if((arg1 == NULL) || (arg2 != NULL) || (arg3 != NULL) || (arg4 != NULL)){
+  if((strcmp(arg1, "")==0) || (strcmp(arg2, "")!=0) || (strcmp(arg3, "")!=0) || (strcmp(arg4, "")!=0)){
     exit(4);
   }
 
@@ -662,7 +662,7 @@ main(int argc, char* argv[]) {
             num_to_file = -1;
             lRet = DONE;
           }else if(strcmp(lOpcode, ".fill")==0){
-            if((lArg1 == NULL) || (lArg2 != NULL) || (lArg3 != NULL) || (lArg4 != NULL)){
+            if((strcmp(lArg1, "")==0) || (strcmp(lArg2, "")!=0) || (strcmp(lArg3, "")!=0) || (strcmp(lArg4, "")!=0)){
               exit(4);
             }
             num_to_file = toNum(lArg1);
