@@ -9,5 +9,5 @@ LOOP	ADD R2, R2, #1
 	AND R3, R3, #0
 	ADD R3, R3, #1
 END	TRAP x25
-	.END
 A	.FILL x4000
+	.END
