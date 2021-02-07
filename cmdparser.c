@@ -50,12 +50,19 @@ int inst0(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     if(strchr(opcode,'n')!=NULL){
         int n = 1 << 11;
         decoded_inst = decoded_inst | n;
-    }
-    if(strchr(opcode,'z')!=NULL){
+    }if(strchr(opcode,'z')!=NULL){
         int z = 1 << 10;
         decoded_inst = decoded_inst | z;
     }
     if(strchr(opcode,'p')!=NULL){
+        int p = 1 << 9;
+        decoded_inst = decoded_inst | p;
+    }
+    if(strchr(opcode,'n')==NULL && strchr(opcode,'z')==NULL && strchr(opcode,'p')==NULL){
+      int n = 1 << 11;
+        decoded_inst = decoded_inst | n;
+        int z = 1 << 10;
+        decoded_inst = decoded_inst | z;
         int p = 1 << 9;
         decoded_inst = decoded_inst | p;
     }
@@ -235,8 +242,8 @@ int inst5(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
     decoded_inst = decoded_inst | sr1;
 
     if(arg3[0] == 'r'){
-        isReg(arg2);        
-        int sr2 = getRegNumber(&arg2[1]);
+        isReg(arg3);        
+        int sr2 = getRegNumber(&arg3[1]);
         if(sr2>7||sr2<0){
       exit(4);
     }
@@ -333,10 +340,6 @@ int inst8(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 //3 operands
 int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
-    if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
-      exit(4);
-    }
-
     int decoded_inst = 0x9000;
 
     isReg(arg1);
@@ -357,17 +360,29 @@ int inst9(char *opcode, char *arg1, char *arg2, char *arg3, char *arg4){
 
     if(strcmp(opcode, "not") == 0){
 
-        decoded_inst = decoded_inst | 0x003F;
-    }else if(arg3[0] == 'r'){
-        
-        isReg(arg2);
-        int sr2 = getRegNumber(&arg2[1]);
-        if(sr2>7||sr2<0){
+        if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")!=0) || (strcmp(arg4, "")!=0)){
           exit(4);
         }
-        decoded_inst = decoded_inst | sr2;
+
+        decoded_inst = decoded_inst | 0x003F;
+    }else if(arg3[0] == 'r'){
+
+        if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
+          exit(4);
+        }
+        
+        isReg(arg3);
+        int sr3 = getRegNumber(&arg3[1]);
+        if(sr3>7||sr3<0){
+          exit(4);
+        }
+        decoded_inst = decoded_inst | sr3;
     }else{
         
+        if((strcmp(arg1, "")==0) || (strcmp(arg2, "")==0) || (strcmp(arg3, "")==0) || (strcmp(arg4, "")!=0)){
+          exit(4);
+        }
+
         decoded_inst = decoded_inst | (1<<5);
         int amount5 = toNum(arg3);
         if(amount5 > 15 || amount5 < -16){
