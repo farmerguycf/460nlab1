@@ -532,9 +532,9 @@ main(int argc, char* argv[]) {
 
     
 
-    printf("program name = '%s'\n", prgName);
-    printf("input file name = '%s'\n", iFileName);
-    printf("output file name = '%s'\n", oFileName);
+    // printf("program name = '%s'\n", prgName);
+    // printf("input file name = '%s'\n", iFileName);
+    // printf("output file name = '%s'\n", oFileName);
 
     char lLine[MAX_LINE_LENGTH + 1], *lLabel, *lOpcode, *lArg1,
                 *lArg2, *lArg3, *lArg4;

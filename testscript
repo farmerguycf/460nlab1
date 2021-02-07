@@ -9,7 +9,7 @@ touch outputs/realOutput.obj
 touch outputs/difference.txt
 touch outputs/testOutput.obj
 
-for assembly_file in michael-test.asm sample.asm
+for assembly_file in michael-test.asm sample.asm add_nibbles.asm
 do
 
         ./assembler.linux $assembly_file outputs/realOutput.obj
