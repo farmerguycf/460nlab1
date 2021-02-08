@@ -532,9 +532,9 @@ main(int argc, char* argv[]) {
 
     
 
-    printf("program name = '%s'\n", prgName);
-    printf("input file name = '%s'\n", iFileName);
-    printf("output file name = '%s'\n", oFileName);
+    // printf("program name = '%s'\n", prgName);
+    // printf("input file name = '%s'\n", iFileName);
+    // printf("output file name = '%s'\n", oFileName);
 
     char lLine[MAX_LINE_LENGTH + 1], *lLabel, *lOpcode, *lArg1,
                 *lArg2, *lArg3, *lArg4;
@@ -662,6 +662,8 @@ main(int argc, char* argv[]) {
 
           }else if(strcmp(lOpcode,"nop")==0){
             num_to_file = 0;
+          }else if(strcmp(lOpcode, "halt")==0){
+            num_to_file = 0xF025;
           }
           else{
             // invalid opcode error
@@ -857,6 +859,8 @@ int isOpcode(char * ptr){
   }else if(strcmp(ptr, "xor")==0){
     return 1;
 
+  }else if(strcmp(ptr, "halt")==0){
+    return 1;
   }
   
   return -1;
