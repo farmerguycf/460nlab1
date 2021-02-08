@@ -662,8 +662,12 @@ main(int argc, char* argv[]) {
 
           }else if(strcmp(lOpcode,"nop")==0){
             num_to_file = 0;
+
           }else if(strcmp(lOpcode, "halt")==0){
             num_to_file = 0xF025;
+          }
+          else if(strcmp(lOpcode, "rti")==0){
+            num_to_file = inst8(lOpcode, lArg1, lArg2, lArg3, lArg4);
           }
           else{
             // invalid opcode error
@@ -860,6 +864,12 @@ int isOpcode(char * ptr){
     return 1;
 
   }else if(strcmp(ptr, "halt")==0){
+    return 1;
+
+  }else if(strcmp(ptr, "nop")==0){
+    return 1;
+  }
+  else if(strcmp(ptr, "rti")==0){
     return 1;
   }
   

@@ -9,6 +9,9 @@
         and r3, r1, r6
         add r2, r2, r3
         stb r2, r0, #0
+        nop ; comment
+        rti ; comment
+        ret ;comment
         ; some comment
         halt
         ; another comment
